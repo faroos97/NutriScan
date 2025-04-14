@@ -1,39 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './screens/LoginScreen';
+import SignupScreen from './screens/SignupScreen';
 
-const App = () => {
-  const [message, setMessage] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    // Remplace l'URL par celle de ton backend (adresse IP publique ou localhost adapté)
-    fetch('http://localhost:8000/')
-        .then(response => response.json())
-        .then(data => setMessage(data.message))
-        .catch(error => {
-          console.error('Erreur de connexion au backend:', error);
-          setMessage('Erreur de connexion');
-        })
-        .finally(() => setLoading(false));
-  }, []);
-
-  return (
-      <View style={styles.container}>
-        {loading ? <ActivityIndicator size="large" /> : <Text style={styles.message}>{message}</Text>}
-      </View>
-  );
+type RootStackParamList = {
+  Login: undefined;
+  Signup: undefined;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  message: {
-    fontSize: 20,
-    textAlign: 'center',
-  },
-});
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 export default App;
