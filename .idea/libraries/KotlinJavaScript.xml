@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="KotlinJavaScript" type="repository">
+    <properties maven-id="org.jetbrains.kotlin:kotlin-stdlib-js:2.0.21" packaging="klib" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-js/2.0.21/kotlin-stdlib-js-2.0.21.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-js/2.0.21/kotlin-stdlib-js-2.0.21-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
