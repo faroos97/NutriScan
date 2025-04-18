@@ -5,11 +5,11 @@ import { signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
 import { auth } from '../config/firbaseConfig'; // Assurez-vous que le chemin est correct
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-// Définition des paramètres de navigation
 type RootStackParamList = {
   Home: undefined;
   Login: undefined;
   Signup: undefined;
+  Profile: undefined; // Ajout du profil dans la navigation
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
@@ -22,10 +22,10 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential: UserCredential) => {
-        // Connexion réussie, redirige vers l'écran Home
-        navigation.navigate('Home');
+        // Connexion réussie, redirige vers l'écran Profile
+        navigation.navigate('Profile');
       })
-      .catch((err: any) => { // On peut affiner le type d'erreur par la suite
+      .catch((err: any) => {
         setError(err.message);
       });
   };

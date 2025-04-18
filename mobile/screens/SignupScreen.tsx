@@ -5,11 +5,11 @@ import { createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
 import { auth } from '../config/firbaseConfig'; // Assurez-vous que le chemin est correct
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-
 type RootStackParamList = {
   Home: undefined;
   Login: undefined;
   Signup: undefined;
+  Profile: undefined; // Ajout du profil dans la navigation
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
@@ -22,8 +22,8 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
   const handleSignup = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential: UserCredential) => {
-        // Inscription réussie, rediriger vers l'écran Home
-        navigation.navigate('Home');
+        // Inscription réussie, rediriger vers le Profil
+        navigation.navigate('Profile');
       })
       .catch((err: any) => {
         setError(err.message);
