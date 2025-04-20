@@ -39,7 +39,7 @@ const ProfileScreen: React.FC = () => {
     if (!userId) return;
 
     try {
-        const response = await axios.post('http://localhost:8000/profil', {
+        const response = await axios.post('http://172.20.10.12:8000/profil', {
           goal: goal.toLowerCase(),
           diet: diet.toLowerCase(),
           allergies: allergies.toLowerCase(),
