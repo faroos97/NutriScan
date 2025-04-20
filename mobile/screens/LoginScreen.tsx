@@ -23,7 +23,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential: UserCredential) => {
         // Connexion réussie, redirige vers l'écran Profile
-        navigation.navigate('Profile');
+        navigation.navigate('Main');
       })
       .catch((err: any) => {
         setError(err.message);
