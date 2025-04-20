@@ -4,7 +4,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 # Initialisation de Firebase Admin SDK
-cred = credentials.Certificate("/Users/abdou/Developer/NutriScan/backend/nutriscan-4f733-firebase-adminsdk-fbsvc-800545f370.json")
+cred = credentials.Certificate("nutriscan-4f733-firebase-adminsdk-fbsvc-86d4a34a0d.json")
 firebase_admin.initialize_app(cred)
 
 # Initialisation Firestore
