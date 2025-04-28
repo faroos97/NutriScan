@@ -2,6 +2,12 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import firebase_admin
 from firebase_admin import credentials, firestore
+from fastapi.responses import JSONResponse
+from ultralytics import YOLO
+from PIL import Image
+import shutil
+import os
+import uuid
 
 # Initialisation de Firebase Admin SDK
 cred = credentials.Certificate("nutriscan-4f733-firebase-adminsdk-fbsvc-86d4a34a0d.json")
@@ -12,6 +18,7 @@ db = firestore.client()
 
 app = FastAPI()
 
+model = YOLO("best.pt")
 # Modèle pour le profil nutritionnel
 class NutritionProfile(BaseModel):
     goal: str
@@ -49,3 +56,35 @@ async def get_nutrition_profile(user_id: str):
             raise HTTPException(status_code=404, detail="Profil non trouvé")
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Erreur lors de la récupération du profil : {str(e)}")
+
+@app.post("/scan-image")
+async def scan_image(file: UploadFile = File(...)):
+    try:
+        # Étape 1: Sauvegarder temporairement l'image
+        temp_filename = f"temp_{uuid.uuid4().hex}.jpg"
+        with open(temp_filename, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        # Étape 2: Charger l’image avec PIL pour détection
+        image = Image.open(temp_filename)
+
+        # Étape 3: Inference avec YOLOv8
+        results = model.predict(image)
+        detected = []
+
+        for result in results:
+            boxes = result.boxes
+            names = result.names
+            for box in boxes:
+                cls_id = int(box.cls[0].item())
+                name = model.names[cls_id]
+                detected.append(name)
+
+        # Étape 4: Nettoyage
+        os.remove(temp_filename)
+
+        # Étape 5: Retourner la liste des aliments détectés
+        return JSONResponse(content={"aliments_detectes": list(set(detected))})
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur lors de l’analyse de l’image : {str(e)}")

@@ -9,6 +9,7 @@ import SignupScreen from './screens/SignupScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import BarcodeScannerScreen from './screens/BarcodeScannerScreen';
 import ProductDetailsScreen from './screens/ProductDetailsScreen';
+import CameraScanScreen from './screens/CameraScanScreen';
 
 // Create the root stack navigator
 type RootStackParamList = {
@@ -18,12 +19,14 @@ type RootStackParamList = {
   Profile: undefined; // Add the "Profile" key
   BarcodeScanner: undefined; // Add the "BarcodeScanner" key
   ProductDetails: { product: any }; // Add the "ProductDetails" key
+  CameraScan: undefined; // Add the "CameraScan" key
 };
 
 // Create the bottom tab navigator
 type BottomTabParamList = {
   Profile: undefined;
   BarcodeScanner: undefined;
+  CameraScan: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -49,6 +52,7 @@ function BottomTabNavigator() {
     >
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="BarcodeScanner" component={BarcodeScannerScreen} />
+      <Tab.Screen name="CameraScan" component={CameraScanScreen} />
     </Tab.Navigator>
   );
 }
@@ -73,10 +77,25 @@ const App = () => {
           component={BottomTabNavigator} // Switch to the BottomTabNavigator after login/signup
           options={{ headerShown: false }}
         />
-         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
-         <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} options={{ headerShown: true }}/>
-
-         <Stack.Screen name="BarcodeScanner" component={BarcodeScannerScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} options={{ headerShown: true }} />
+        <Stack.Screen
+          name="CameraScan"
+          component={CameraScanScreen}
+          options={({ navigation }) => ({
+            title: 'Scan Photo',
+            headerRight: () => (
+              <Ionicons
+                name="camera"
+                size={24}
+                color="tomato"
+                style={{ marginRight: 15 }}
+                onPress={() => navigation.navigate('CameraScan')}
+              />
+            ),
+          })}
+        />
+        <Stack.Screen name="BarcodeScanner" component={BarcodeScannerScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
